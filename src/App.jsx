@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import './App.css'
+import { getRandomFact } from "./services/facts"
 
-const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact'
 //const CAT_ENDPOINT_IMAGE_URL = `https://cataas.com/cat/says/${firstWord}?size=50&color=red&json=true`
 const CAT_PREFIX_IMG_URL = 'https://cataas.com'
 
@@ -11,20 +11,11 @@ export function App () {
   const [factError, setFactError] = useState()
 
 //useEffect(()=>{}, [])
+  
 
 //efecto para recuperar la frase al renderizar la pagina 
-  useEffect(() => {
-    fetch(CAT_ENDPOINT_RANDOM_FACT)
-    .then(res => {
-      if(!res.ok){
-        setFactError('No se ha podido recuperar la frase')
-      }
-      return  res.json()
-    })
-    .then(data => {
-      const {fact} = data
-      setFact(fact)
-    })
+  useEffect(()=> {
+    getRandomFact().then(newFact => setFact(newFact))
   }, [])
 
 //para recuperar la imagen cada vez que tenemos una frase nueva
@@ -41,10 +32,17 @@ export function App () {
         }) 
   }, [fact])
 
+  const handleClick = async () => {
+    const newFact = await getRandomFact()
+    setFact(newFact)
+  }
+
 
   return (
     <main>
       <h1> App de gatos </h1>
+
+        <button onClick={handleClick}>Get new fact</button>
         {fact && <p>{fact}</p>}
         {imageUrl && <img src={`${CAT_PREFIX_IMG_URL}${imageUrl}`} alt={`Image extracted using the first three 
         word for ${fact} `} />} 
