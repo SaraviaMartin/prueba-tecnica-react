@@ -25,9 +25,9 @@ export function App () {
     <main>
       <h1> App de gatos </h1>
 
-        <button onClick={handleClick}>Get new fact</button>
+        <button onClick={handleClick} className='button'>Get new fact</button>
         {fact && <p>{fact}</p>}
         {imageUrl && <img src={imageUrl} alt={`Image extracted using the first three 
-        word for ${fact} `} />} 
+        word for ${fact} `} className='img' />} 
     </main>  
   ) }
